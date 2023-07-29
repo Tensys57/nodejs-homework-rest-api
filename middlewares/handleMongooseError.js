@@ -1,5 +1,9 @@
+const { MongooseError } = require("mongoose");
+
 const handleMongooseError = (error, data, next) => {
-  error.status = 400;
+  const { name, code } = error;
+  const status = name === MongooseError && code === 11000 ? 409 : 400;
+  error.status = status;
   next();
 };
 
