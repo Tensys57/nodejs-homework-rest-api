@@ -2,7 +2,9 @@ const { Schema, model } = require("mongoose");
 
 const Joi = require("joi");
 
-const { handleMongooseError } = require("../middlewares");
+const handleMongooseError = require("../middlewares/handleMongooseError");
+
+// const { handleMongooseError } = require("../middlewares");
 
 const emailRegexp = /^\w+([.-]?\w+)*@\w+([npm run lint.-]?\w+)*(\.\w{2,3})+$/;
 
