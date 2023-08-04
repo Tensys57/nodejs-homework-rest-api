@@ -19,7 +19,7 @@ router.post("/logout", authenticate, ctrl.logout);
 router.patch(
   "/:id/subscription",
   authenticate,
-  validateBody(schemas.subscribeSchema),
+  validateBody(schemas.subscriptionsSchema),
   ctrl.subscription
 );
 
