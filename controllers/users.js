@@ -3,6 +3,7 @@ const jwt = require("jsonwebtoken");
 const gravatar = require("gravatar");
 const path = require("path");
 const fs = require("fs/promises");
+const Jimp = require("jimp");
 
 const { User } = require("../models/user");
 
@@ -29,7 +30,7 @@ const register = async (req, res) => {
     avatarURL,
   });
 
-  res.json({
+  res.status(201).json({
     email: newUser.email,
     subscription: newUser.subscription,
   });
@@ -99,8 +100,14 @@ const updateAvatar = async (req, res) => {
   const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
 
-  res.json({ avatarURL });
-};
+
+  Jimp.read(avatarURL, async (error, image) => {
+    if (error) throw error;
+    image.resize(250, 250);
+    const resizedAvatarPath = path.join(avatarsDir, `resized_${filename}`);
+    await image.writeAsync(resizedAvatarPath); 
+    res.json({ avatarURL: resizedAvatarPath });
+  });
 
 module.exports = {
   register: ctrlWrapper(register),
