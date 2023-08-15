@@ -100,14 +100,14 @@ const updateAvatar = async (req, res) => {
   const avatarURL = path.join("avatars", filename);
   await User.findByIdAndUpdate(_id, { avatarURL });
 
-
   Jimp.read(avatarURL, async (error, image) => {
     if (error) throw error;
     image.resize(250, 250);
     const resizedAvatarPath = path.join(avatarsDir, `resized_${filename}`);
-    await image.writeAsync(resizedAvatarPath); 
+    await image.writeAsync(resizedAvatarPath);
     res.json({ avatarURL: resizedAvatarPath });
   });
+};
 
 module.exports = {
   register: ctrlWrapper(register),
